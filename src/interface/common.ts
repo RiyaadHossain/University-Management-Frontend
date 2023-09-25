@@ -1,1 +1,1 @@
-export type ChildrenCoponent = { children: React.ReactNode };
+export type IChildrenCoponent = { children: React.ReactNode };
