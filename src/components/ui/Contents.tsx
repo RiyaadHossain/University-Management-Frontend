@@ -1,9 +1,22 @@
 import { Layout } from "antd";
 import { IChildrenCoponent } from "@/interface/common";
+import UMBreadCrum from "./UMBreadCrum";
 
 const { Content, Footer } = Layout;
 
 export default function Contents({ children }: IChildrenCoponent) {
+  const base = "admin";
+  const breadcrumItems = [
+    {
+      label: `${base}`,
+      link: `/${base}`,
+    },
+    {
+      label: "student",
+      link: `/${base}/student`,
+    },
+  ];
+
   return (
     <Layout>
       <Content style={{ margin: "0 16px" }}>
@@ -14,6 +27,7 @@ export default function Contents({ children }: IChildrenCoponent) {
             color: "black",
           }}
         >
+          <UMBreadCrum items={breadcrumItems} />
           {children}
         </div>
       </Content>

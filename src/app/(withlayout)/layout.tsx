@@ -1,9 +1,9 @@
 "use client";
 
 import { Layout } from "antd";
-import Sidebar from "../components/ui/Sidebar";
-import Contents from "../components/ui/Contents";
 import { IChildrenCoponent } from "@/interface/common";
+import Sidebar from "@/components/ui/Sidebar";
+import Contents from "@/components/ui/Contents";
 
 const DashboardLayout = ({ children }: IChildrenCoponent) => {
   return (
