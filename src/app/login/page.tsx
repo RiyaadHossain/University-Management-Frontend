@@ -7,6 +7,8 @@ import Image from "next/image";
 import Form from "@/components/Form/Form";
 import FormInput from "@/components/Form/FormInput";
 import loginImage from "../../assets/login-image.png";
+import { useUserLoginMutation } from "@/redux/api/authApi";
+import { storeUserInfo } from "@/service/auth.services";
 
 type FormValues = {
   id: string;
@@ -14,8 +16,11 @@ type FormValues = {
 };
 
 export default function LoginPage() {
-  const onSubmit: SubmitHandler<FormValues> = (data: any) => {
-    console.log(data);
+  const [userLogin] = useUserLoginMutation();
+
+  const onSubmit: SubmitHandler<FormValues> = async (data: any) => {
+    const res = await userLogin(data).unwrap();
+    storeUserInfo(res?.data?.accessToken);
   };
 
   return (
@@ -30,7 +35,7 @@ export default function LoginPage() {
             <div>
               <FormInput name="id" type="text" size="large" label="User Id" />
             </div>
-            <div  style={{ margin: "10px 0" }}>
+            <div style={{ margin: "10px 0" }}>
               <FormInput
                 name="password"
                 type="password"

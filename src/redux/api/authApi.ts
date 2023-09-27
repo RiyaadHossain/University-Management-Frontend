@@ -1,10 +1,13 @@
-import { baseApi } from "./baseAPI";
+import { baseApi } from "./baseApi";
+
+
+const AUTH_URL = "/auth";
 
 const extendedApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     userLogin: build.mutation({
       query: (loginData) => ({
-        url: ``,
+        url: `${AUTH_URL}/login`,
         method: "POST",
         data: loginData,
       }),
