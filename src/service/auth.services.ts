@@ -1,6 +1,6 @@
+import jwtDecode from "jwt-decode";
 import { authToken } from "@/constant/local-storage";
 import { getFromLocalStorage, setToLocalStorage } from "@/utils/local-storage";
-import jwtDecode from "jwt-decode";
 
 export const storeUserInfo = (token: string) => {
   if (!token) return "";
