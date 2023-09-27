@@ -26,7 +26,7 @@ export default function FormInput({
 
   return (
     <>
-      {label ? label : null}
+      {label ? <span> {label}</span> : null}
       <Controller
         control={control}
         name={name}

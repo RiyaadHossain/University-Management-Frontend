@@ -25,19 +25,19 @@ export default function Sidebar() {
         bottom: 0,
       }}
     >
-      {/* {!collapsed && ( */}
-      <div
-        style={{
-          color: "white",
-          fontSize: "2rem",
-          textAlign: "center",
-          fontWeight: "bold",
-          marginBottom: "1rem",
-        }}
-      >
-        PH-University
-      </div>
-      {/* )} */}
+      {!collapsed && (
+        <div
+          style={{
+            color: "white",
+            fontSize: "2rem",
+            textAlign: "center",
+            fontWeight: "bold",
+            margin: "1rem 0",
+          }}
+        >
+          PH-University
+        </div>
+      )}
       <Menu
         theme="dark"
         defaultSelectedKeys={["1"]}

@@ -3,7 +3,7 @@ import Link from "next/link";
 import React from "react";
 import { HomeOutlined } from "@ant-design/icons";
 
-type IUMBreadCrumb = { items: { link: string; label: string }[] };
+type IUMBreadCrumb = { items: { link?: string; label: string }[] };
 
 export default function UMBreadCrum({ items }: IUMBreadCrumb) {
   const breadcrumItems = [
