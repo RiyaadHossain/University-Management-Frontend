@@ -21,5 +21,5 @@ export default function UMBreadCrum({ items }: IUMBreadCrumb) {
     ),
   ];
 
-  return <Breadcrumb items={breadcrumItems} />;
+  return <Breadcrumb style={{ marginTop: "10px" }} items={breadcrumItems} />;
 }

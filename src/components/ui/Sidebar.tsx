@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { Layout, Menu } from "antd";
 
-import { ENUM_USER_ROLE } from "@/constant/role";
 import sidebarItems from "@/constant/sidebarItems";
+import { getUserInfo } from "@/service/auth.services";
 
 const { Sider } = Layout;
 
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
-  const role = ENUM_USER_ROLE.STUDENT;
+  const { role } = getUserInfo() as any;
 
   return (
     <Sider

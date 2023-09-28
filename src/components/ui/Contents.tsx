@@ -1,6 +1,7 @@
 import { Layout } from "antd";
 import { IChildrenCoponent } from "@/interface/common";
 import UMBreadCrum from "./UMBreadCrum";
+import Header from "./Header";
 
 const { Content, Footer } = Layout;
 
@@ -22,14 +23,15 @@ export default function Contents({ children }: IChildrenCoponent) {
 
   return (
     <Layout>
-      <Content style={{ margin: "0 16px" }}>
+      <Content style={{ margin: "0 10px" }}>
         <div
           style={{
-            padding: 24,
-            minHeight: 360,
+            padding: 12,
+            minHeight: "100vh",
             color: "black",
           }}
         >
+          <Header />
           <UMBreadCrum items={breadcrumItems} />
           {children}
         </div>

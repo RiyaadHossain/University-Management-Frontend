@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { Button, Col, Row } from "antd";
 import { SubmitHandler } from "react-hook-form";
 import Image from "next/image";
@@ -9,6 +8,7 @@ import FormInput from "@/components/Form/FormInput";
 import loginImage from "../../assets/login-image.png";
 import { useUserLoginMutation } from "@/redux/api/authApi";
 import { storeUserInfo } from "@/service/auth.services";
+import { useRouter } from "next/navigation";
 
 type FormValues = {
   id: string;
@@ -17,10 +17,12 @@ type FormValues = {
 
 export default function LoginPage() {
   const [userLogin] = useUserLoginMutation();
+  const router = useRouter();
 
   const onSubmit: SubmitHandler<FormValues> = async (data: any) => {
     const res = await userLogin(data).unwrap();
-    storeUserInfo(res?.data?.accessToken);
+    storeUserInfo(res?.accessToken);
+    router.push("/profile");
   };
 
   return (
