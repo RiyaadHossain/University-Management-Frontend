@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+
 export default function Home() {
-  return <h1>Hello From University Management 🏫</h1>;
+  return redirect("/profile");
 }

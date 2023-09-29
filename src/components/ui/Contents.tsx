@@ -2,19 +2,21 @@ import { Layout } from "antd";
 import { IChildrenCoponent } from "@/interface/common";
 import UMBreadCrum from "./UMBreadCrum";
 import Header from "./Header";
+import { getUserInfo } from "@/service/auth.services";
 
 const { Content, Footer } = Layout;
 
 export default function Contents({ children }: IChildrenCoponent) {
-  const base = "admin";
+  const { role } = getUserInfo() as any;
+
   const breadcrumItems = [
     {
-      label: `${base}`,
-      link: `/${base}`,
+      label: `${role}`,
+      link: `/${role}`,
     },
     {
       label: "student",
-      link: `/${base}/student`,
+      link: `/${role}/student`,
     },
     {
       label: "student",
@@ -23,7 +25,8 @@ export default function Contents({ children }: IChildrenCoponent) {
 
   return (
     <Layout>
-      <Content style={{ margin: "0 10px" }}>
+      <Content>
+        <Header />
         <div
           style={{
             padding: 12,
@@ -31,7 +34,6 @@ export default function Contents({ children }: IChildrenCoponent) {
             color: "black",
           }}
         >
-          <Header />
           <UMBreadCrum items={breadcrumItems} />
           {children}
         </div>

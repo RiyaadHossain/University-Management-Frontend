@@ -1,4 +1,3 @@
-import { authToken } from "@/constant/local-storage";
 import { removeUserInfo } from "@/service/auth.services";
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Button, Dropdown, Layout, MenuProps, Row } from "antd";

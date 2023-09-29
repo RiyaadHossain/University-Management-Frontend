@@ -8,6 +8,7 @@ axiosInstance.defaults.headers.post["Content-Type"] = "application/json";
 axiosInstance.defaults.headers["Accept"] = "application/json";
 axiosInstance.defaults.timeout = 60000;
 
+// Request Intercepter
 axiosInstance.interceptors.request.use(
   function (config) {
     const accessToken = getFromLocalStorage(authToken);
@@ -19,6 +20,7 @@ axiosInstance.interceptors.request.use(
   }
 );
 
+// Response Intercepter
 axiosInstance.interceptors.response.use(
   //@ts-ignore
   function (response) {

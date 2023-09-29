@@ -19,8 +19,8 @@ export default function sidebarItems(role: string) {
       icon: <ProfileOutlined />,
       children: [
         {
-          label: <Link href={`/${role}/profile`}>Account Profile</Link>,
-          key: `/${role}/profile`,
+          label: <Link href={`/${role}/`}>Account Profile</Link>,
+          key: `/${role}/`,
         },
         {
           label: <Link href={`/${role}/change-password`}>Change Password</Link>,
@@ -122,25 +122,14 @@ export default function sidebarItems(role: string) {
     ...defaultSidebarItems,
     ...commonAdminSidebarItems,
     {
-      label: <Link href={`/${role}/admin`}>Manage Admin</Link>,
+      label: <Link href={`/${role}/manage-admin`}>Manage Admin</Link>,
       icon: <TableOutlined />,
       key: `/${role}/admin`,
     },
     {
-      label: <Link href={`/${role}/user`}>Manage User</Link>,
+      label: <Link href={`/${role}/manage-user`}>Manage User</Link>,
       icon: <TableOutlined />,
       key: `/${role}/user`,
-    },
-    {
-      label: "Manage permission",
-      key: "manage-permission",
-      icon: <AppstoreOutlined />,
-      children: [
-        {
-          label: <Link href={`/${role}/permission`}>View permissions</Link>,
-          key: `/${role}/permission`,
-        },
-      ],
     },
     {
       label: "Management",
@@ -148,7 +137,9 @@ export default function sidebarItems(role: string) {
       icon: <AppstoreOutlined />,
       children: [
         {
-          label: <Link href={`/${role}/department`}>Department</Link>,
+          label: (
+            <Link href={`/${role}/management/department`}>Department</Link>
+          ),
           key: `/${role}/department`,
         },
       ],
@@ -192,7 +183,7 @@ export default function sidebarItems(role: string) {
       key: `/${role}/academic-report`,
     },
   ];
-
+  console.log(role);
   if (role === ENUM_USER_ROLE.SUPER_ADMIN) return superAdminSidebarItems;
   else if (role === ENUM_USER_ROLE.ADMIN) return adminSidebarItems;
   else if (role === ENUM_USER_ROLE.FACULTY) return facultySidebarItems;
