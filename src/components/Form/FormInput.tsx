@@ -1,4 +1,5 @@
-import { Input } from "antd";
+import { Input } from "antd"; 
+import { getErrorMessageByPropertyName } from "@/utils/schema-validation";
 import { Controller, useFormContext } from "react-hook-form";
 
 interface IInputProps {
@@ -22,11 +23,19 @@ export default function FormInput({
   validation,
   placeholder,
 }: IInputProps) {
-  const { control } = useFormContext();
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+
+  // console.log(errors)
+  const errorMessage = getErrorMessageByPropertyName(errors, name);
 
   return (
     <>
-      {label ? <span style={{ display: "block", marginBottom: "2px" }}> {label}</span> : null}
+      {label ? (
+        <span style={{ display: "block", marginBottom: "2px" }}> {label}</span>
+      ) : null}
       <Controller
         control={control}
         name={name}
@@ -50,6 +59,7 @@ export default function FormInput({
           )
         }
       />
+      <small style={{ color: "red" }}>{errorMessage}</small>
     </>
   );
 }

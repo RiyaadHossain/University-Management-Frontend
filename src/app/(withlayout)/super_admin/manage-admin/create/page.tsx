@@ -13,8 +13,15 @@ import {
 import { UploadImage } from "@/components/Form/UploadImage";
 import FormTextArea from "@/components/Form/FormTextArea";
 import FormDatePicker from "@/components/Form/FormDatePicker";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { adminSchema } from "@/schema/admin";
+import { Dayjs } from "dayjs";
 
 export default function AdminCreatePage() {
+  const onDateChange = (date: Dayjs | null, dateString: string) => {
+    console.log(date, dateString);
+  };
+
   const onSubmit: SubmitHandler<any> = async (data: any) => {
     try {
       console.log(data);
@@ -26,7 +33,7 @@ export default function AdminCreatePage() {
   return (
     <div style={{ marginTop: "15px" }}>
       <h1 style={{ marginBottom: "10px" }}>Create Admin Form</h1>
-      <Form submitHandler={onSubmit}>
+      <Form submitHandler={onSubmit} resolver={yupResolver(adminSchema)}>
         {/* Admin Info */}
         <div
           style={{
@@ -75,7 +82,7 @@ export default function AdminCreatePage() {
             <Col className={`gutter-row ${style.field_mb}`} span={8}>
               <FormInput
                 type="password"
-                name="pasword"
+                name="password"
                 size="large"
                 label="Password"
               />
@@ -169,6 +176,7 @@ export default function AdminCreatePage() {
               }}
             >
               <FormDatePicker
+                onChange={onDateChange}
                 name="admin.dateOfBirth"
                 label="Date of birth"
                 size="large"

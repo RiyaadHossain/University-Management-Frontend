@@ -1,3 +1,4 @@
+import { getErrorMessageByPropertyName } from "@/utils/schema-validation";
 import { Select } from "antd";
 import { Controller, useFormContext } from "react-hook-form";
 
@@ -25,11 +26,18 @@ export default function FormSelect({
   placeholder,
   options,
 }: ISelectProps) {
-  const { control } = useFormContext();
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+
+  const errorMessage = getErrorMessageByPropertyName(errors, name);
 
   return (
     <>
-      {label ? <span style={{ display: "block", marginBottom: "2px" }}> {label}</span> : null}
+      {label ? (
+        <span style={{ display: "block", marginBottom: "2px" }}> {label}</span>
+      ) : null}
       <Controller
         control={control}
         name={name}
@@ -44,6 +52,7 @@ export default function FormSelect({
           />
         )}
       />
+      <small style={{ color: "red" }}>{errorMessage}</small>
     </>
   );
 }
