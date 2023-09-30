@@ -29,7 +29,7 @@ export default function Contents({ children }: IChildrenCoponent) {
         <Header />
         <div
           style={{
-            padding: 12,
+            padding: 15,
             minHeight: "100vh",
             color: "black",
           }}

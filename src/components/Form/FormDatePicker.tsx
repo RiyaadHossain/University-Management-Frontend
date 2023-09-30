@@ -24,7 +24,11 @@ export default function FormDatePicker({
   };
   return (
     <>
-      {label ? <span> {label}</span> : null}
+      {label ? (
+        <span style={{ display: "inline-block", marginBottom: "2px" }}>
+          {label}
+        </span>
+      ) : null}
       <br />
       <Controller
         name={name}

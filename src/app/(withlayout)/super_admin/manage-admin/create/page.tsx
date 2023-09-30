@@ -45,6 +45,9 @@ export default function AdminCreatePage() {
             Admin Information
           </p>
           <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+            <Col className={`gutter-row ${style.field_mb}`} span={24}>
+              <UploadImage />
+            </Col>
             <Col className={`gutter-row ${style.field_mb}`} span={8}>
               <FormInput
                 type="text"
@@ -94,9 +97,6 @@ export default function AdminCreatePage() {
                 placeholder="Select a department"
                 options={departmentOptions}
               />
-            </Col>
-            <Col className={`gutter-row ${style.field_mb}`} span={8}>
-              <UploadImage />
             </Col>
           </Row>
         </div>
