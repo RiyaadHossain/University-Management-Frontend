@@ -6,7 +6,7 @@ import Form from "@/components/Form/Form";
 import FormInput from "@/components/Form/FormInput";
 import { useRouter } from "next/navigation";
 import { SubmitHandler } from "react-hook-form";
-import { Button } from "antd";
+import { Button, message } from "antd";
 
 type FormValues = {
   id: string;
@@ -21,6 +21,7 @@ export default function LogInForm() {
     const res = await userLogin(data).unwrap();
     storeUserInfo(res?.accessToken);
     router.push("/profile");
+    message.success("User logged in successfully");
   };
 
   return (
