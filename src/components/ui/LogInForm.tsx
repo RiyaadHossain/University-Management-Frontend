@@ -18,10 +18,15 @@ export default function LogInForm() {
   const router = useRouter();
 
   const onSubmit: SubmitHandler<FormValues> = async (data: any) => {
-    const res = await userLogin(data).unwrap();
-    storeUserInfo(res?.accessToken);
-    router.push("/profile");
-    message.success("User logged in successfully");
+    message.loading("Logging in....");
+    try {
+      const res = await userLogin(data).unwrap();
+      storeUserInfo(res?.accessToken);
+      router.push("/profile");
+      message.success("User logged in successfully");
+    } catch (error) {
+      message.error("Failed to login");
+    }
   };
 
   return (

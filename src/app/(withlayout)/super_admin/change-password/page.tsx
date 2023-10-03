@@ -7,8 +7,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { passwordChangeSchema } from "@/schema/change-password";
 
 export default function ChangePasswordPage() {
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const onSubmit = async (data: any) => {
+    try {
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

@@ -2,13 +2,23 @@
 
 import Form from "@/components/Form/Form";
 import FormInput from "@/components/Form/FormInput";
+import { useAddDepartmentMutation } from "@/redux/api/departmentApi";
 import { departmentSchema } from "@/schema/deaprtment";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Col, Row } from "antd";
+import { Button, Col, Row, message } from "antd";
 
-export default function page() {
-  const onSubmit = (data: any) => {
-    console.log(data);
+export default function AddDepartmentPage() {
+  const [addDepartment] = useAddDepartmentMutation();
+
+  const onSubmit = async (data: any) => {
+    message.loading("Processing....");
+    try {
+      const res = await addDepartment(data);
+      console.log(res);
+      message.success("Department added successfully");
+    } catch (error) {
+      message.error("Failed to Add Deapartment");
+    }
   };
 
   return (

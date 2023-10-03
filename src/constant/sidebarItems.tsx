@@ -183,7 +183,7 @@ export default function sidebarItems(role: string) {
       key: `/${role}/academic-report`,
     },
   ];
-  console.log(role);
+
   if (role === ENUM_USER_ROLE.SUPER_ADMIN) return superAdminSidebarItems;
   else if (role === ENUM_USER_ROLE.ADMIN) return adminSidebarItems;
   else if (role === ENUM_USER_ROLE.FACULTY) return facultySidebarItems;

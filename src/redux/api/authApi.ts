@@ -1,9 +1,10 @@
+import { ENUM_TAG_TYPE } from "../tag-types";
 import { baseApi } from "./baseApi";
 
 
 const AUTH_URL = "/auth";
 
-const extendedApi = baseApi.injectEndpoints({
+const authApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     userLogin: build.mutation({
       query: (loginData) => ({
@@ -11,9 +12,9 @@ const extendedApi = baseApi.injectEndpoints({
         method: "POST",
         data: loginData,
       }),
-      invalidatesTags: ["User"],
+      invalidatesTags: [ENUM_TAG_TYPE.user],
     }),
   }),
 });
 
-export const { useUserLoginMutation } = extendedApi;
+export const { useUserLoginMutation } = authApi;

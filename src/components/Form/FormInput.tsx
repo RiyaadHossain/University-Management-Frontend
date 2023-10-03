@@ -28,7 +28,6 @@ export default function FormInput({
     formState: { errors },
   } = useFormContext();
 
-  console.log(errors)
   const errorMessage = getErrorMessageByPropertyName(errors, name);
 
   return (
