@@ -14,7 +14,6 @@ export default function AddDepartmentPage() {
     message.loading("Processing....");
     try {
       const res = await addDepartment(data);
-      console.log(res);
       message.success("Department added successfully");
     } catch (error) {
       message.error("Failed to Add Deapartment");

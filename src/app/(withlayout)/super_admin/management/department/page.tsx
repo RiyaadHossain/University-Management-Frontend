@@ -1,121 +1,147 @@
 "use client";
-
 import Link from "next/link";
-import { Button, Space, Tag } from "antd";
+import { Button, Input, Space, message } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { UMTable } from "@/components/ui/UMTable";
-
-interface DataType {
-  key: string;
-  name: string;
-  age: number;
-  address: string;
-  tags: string[];
-}
-
-const columns: ColumnsType<DataType> = [
-  {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-    // render: (text) => <a>{text}</a>,
-  },
-  {
-    title: "Age",
-    dataIndex: "age",
-    key: "age",
-    sorter: (a: any, b: any) => a.age - b.age,
-  },
-  {
-    title: "Address",
-    dataIndex: "address",
-    key: "address",
-  },
-  {
-    title: "Tags",
-    key: "tags",
-    dataIndex: "tags",
-    render: (_, { tags }) => (
-      <>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? "geekblue" : "green";
-          if (tag === "loser") {
-            color = "volcano";
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </>
-    ),
-  },
-  {
-    title: "Action",
-    key: "action",
-    render: (data, record) => {
-      return (
-        <Space size="middle">
-          <Button onClick={() => console.log(data)} danger>
-            Delete {record.name}
-          </Button>
-        </Space>
-      );
-    },
-  },
-];
-
-const data: DataType[] = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-    tags: ["nice", "developer"],
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-    tags: ["loser"],
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sydney No. 1 Lake Park",
-    tags: ["cool", "teacher"],
-  },
-];
-
-const onPageChange = (page: number, pageSize: number) => {
-  console.log("onPageChange: ", page, pageSize);
-};
-
-const onTableChange = (pagination: any, filters: any, sorter: any) => {
-  console.log("onTableChange: ", pagination, filters, sorter);
-};
+import {
+  useDeleteDepartmentMutation,
+  useGetDepartmentsQuery,
+} from "@/redux/api/departmentApi";
+import { useState } from "react";
+import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
+import { useDebounce } from "@/hooks/debounce";
 
 export default function DepartmentPage() {
+  const [deleteDepartment] = useDeleteDepartmentMutation();
+
+  const query: Record<string, unknown> = {};
+
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [sortBy, setSortBy] = useState("createdAt");
+  const [sortOrder, setSortOrder] = useState("desc");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const delay = 600;
+  const debounceTerm = useDebounce({ searchTerm, delay });
+
+  query["page"] = page;
+  query["limit"] = limit;
+  query["sortBy"] = sortBy;
+  query["sortOrder"] = sortOrder;
+
+  if (!!debounceTerm) {
+    query["searchTerm"] = debounceTerm;
+  }
+
+  const { data, isLoading } = useGetDepartmentsQuery({ ...query });
+
+  const departments = data?.departments;
+  const meta = data?.meta;
+
+  const onPageChange = (page: number, limit: number) => {
+    setPage(page);
+    setLimit(limit);
+  };
+
+  const onTableChange = (pagination: any, filters: any, sorter: any) => {
+    if (Object.keys(sorter).length) {
+      let sortOrder = "asc";
+      if (sorter.order === "descend") sortOrder = "desc";
+      else sortOrder = "asc";
+
+      setSortOrder(sortOrder);
+      setSortBy(sorter.field);
+    }
+  };
+
+  const onDeleteHandler = async (id: string) => {
+    message.loading("Deleting.....");
+    try {
+      //   console.log(data);
+      await deleteDepartment(id);
+      message.success("Department deleted successfully");
+    } catch (err: any) {
+      message.error(err.message);
+    }
+  };
+
+  const columns: ColumnsType = [
+    {
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
+    },
+    {
+      title: "CreatedAt",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      sorter: true,
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (data) => {
+        return (
+          <Space size="middle">
+            <Link href={`department/edit/${data._id}`}>
+              <Button type="primary">
+                <EditOutlined />
+              </Button>
+            </Link>
+            <Button onClick={() => onDeleteHandler(data._id)} danger>
+              <DeleteOutlined />
+            </Button>
+          </Space>
+        );
+      },
+    },
+  ];
+  
+  const onClearFilter = () => {
+    setSortBy("");
+    setSortOrder("");
+    setSearchTerm("");
+  };
+
   return (
     <div>
       <h1 style={{ margin: "10px 0" }}>Department Page</h1>
-      <Link href="department/create">
-        <Button type="primary">Create Department</Button>
-      </Link>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <div
+          style={{ display: "flex", alignItems: "center", columnGap: "5px" }}
+        >
+          <Input
+            size="large"
+            style={{ maxWidth: "300px" }}
+            placeholder="Search......."
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <Button size="large" danger onClick={onClearFilter}>
+            Clear Filter
+          </Button>
+        </div>
+        <Link href="department/create">
+          <Button type="primary">Create Department</Button>
+        </Link>
+      </div>
       <div
         style={{
           marginTop: "25px",
         }}
       >
         <UMTable
-          loading={false}
+          loading={isLoading}
           columns={columns}
-          dataSource={data}
-          pageSize={10}
-          totalPages={55}
+          dataSource={departments}
+          pageSize={limit}
+          totalPages={meta?.total}
           showSizeChanger={true}
           onPaginationChange={onPageChange}
           onTableChange={onTableChange}
