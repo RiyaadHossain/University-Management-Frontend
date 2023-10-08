@@ -13,14 +13,22 @@ export const axiosBaseQuery =
       data?: AxiosRequestConfig["data"];
       params?: AxiosRequestConfig["params"];
       meta?: IMeta;
-      applicationType?: string;
+      contentType?: string;
     },
     unknown,
     unknown
   > =>
-  async ({ url, method, data, params }) => {
+  async ({ url, method, data, params, contentType }) => {
     try {
-      const result = await axiosInstance({ url: baseUrl + url, method, data, params });
+      const result = await axiosInstance({
+        url: baseUrl + url,
+        method,
+        data,
+        params,
+        headers: {
+          "Content-Type": contentType || "application/json",
+        },
+      });
       return result;
     } catch (axiosError) {
       let err = axiosError as AxiosError;

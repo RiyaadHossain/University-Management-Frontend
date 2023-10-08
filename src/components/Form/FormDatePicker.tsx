@@ -43,8 +43,7 @@ export default function FormDatePicker({
         control={control}
         render={({ field }) => (
           <DatePicker
-            {...field}
-            value={dayjs(field.value) || ""}
+            defaultValue={dayjs(field.value) || ""}
             size={size}
             onChange={handleOnChange}
             style={{ width: "100%" }}

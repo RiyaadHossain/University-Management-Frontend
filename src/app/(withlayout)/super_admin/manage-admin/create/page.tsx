@@ -1,32 +1,53 @@
 "use client";
 import Form from "@/components/Form/Form";
 import FormInput from "@/components/Form/FormInput";
-import { Button, Col, Row } from "antd";
+import { Button, Col, Row, message } from "antd";
 import { SubmitHandler } from "react-hook-form";
 import style from "./styles.module.css";
 import FormSelect from "@/components/Form/FormSelect";
-import {
-  bloodGroupOptions,
-  departmentOptions,
-  genderOptions,
-} from "@/constant/global";
+import { bloodGroupOptions, genderOptions } from "@/constant/global";
 import { UploadImage } from "@/components/Form/UploadImage";
 import FormTextArea from "@/components/Form/FormTextArea";
 import FormDatePicker from "@/components/Form/FormDatePicker";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { adminSchema } from "@/schema/admin";
 import { Dayjs } from "dayjs";
+import { useGetDepartmentsQuery } from "@/redux/api/departmentApi";
+import { useAddAdminWithFormDataMutation } from "@/redux/api/adminApi";
 
 export default function AdminCreatePage() {
+  const { data } = useGetDepartmentsQuery({ limit: 100, page: 1 });
+  const [addAdminWithFormData] = useAddAdminWithFormDataMutation();
+
   const onDateChange = (date: Dayjs | null, dateString: string) => {
     console.log(date, dateString);
   };
 
-  const onSubmit: SubmitHandler<any> = async (data: any) => {
+  const departments = data?.departments;
+  const departmentOptions =
+    departments &&
+    departments?.map((department) => ({
+      value: department.id,
+      label: department.title,
+    }));
+
+  const onSubmit: SubmitHandler<any> = async (formValues: any) => {
+    message.loading("Processing...");
+    const obj = { ...formValues };
+    const file = obj["file"];
+    delete obj["file"];
+
+    const data = JSON.stringify(obj);
+
+    const formData = new FormData();
+    formData.append("image", file as Blob);
+    formData.append("data", data);
+
     try {
-      console.log(data);
+      await addAdminWithFormData(formData);
     } catch (error) {
       console.error(error);
+      message.error("Failed to create Admin Account");
     }
   };
 
@@ -53,7 +74,7 @@ export default function AdminCreatePage() {
           </p>
           <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
             <Col className={`gutter-row ${style.field_mb}`} span={24}>
-              <UploadImage />
+              <UploadImage name="file" />
             </Col>
             <Col className={`gutter-row ${style.field_mb}`} span={8}>
               <FormInput
@@ -98,10 +119,11 @@ export default function AdminCreatePage() {
             </Col>
             <Col className={`gutter-row ${style.field_mb}`} span={8}>
               <FormSelect
-                name="admin.departmentManagement"
+                name="admin.managementDepartment"
                 label="Department"
                 size="large"
                 placeholder="Select a department"
+                //@ts-ignore
                 options={departmentOptions}
               />
             </Col>
